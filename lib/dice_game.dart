@@ -30,7 +30,11 @@ class _DiceGameState extends State<DiceGame> {
 
   dynamic total = 0;
 
+  dynamic highScore = 0;
+
   bool gameOver = false;
+
+  bool playAgain = false;
 
   final random = Random.secure();
 
@@ -52,6 +56,14 @@ class _DiceGameState extends State<DiceGame> {
               child: Center(
                 child: Text(
                   'SCORE $total',
+                  style: TextStyle(fontSize: 26.0),
+                ),
+              ),
+            ),
+            Container(
+              child: Center(
+                child: Text(
+                  'HIGH SCORE $highScore',
                   style: TextStyle(fontSize: 26.0),
                 ),
               ),
@@ -79,10 +91,9 @@ class _DiceGameState extends State<DiceGame> {
               ),
             ),
             SizedBox(height: 60.0),
-
+            if (!gameOver)
             Container(
               child: Center(
-
                 child: ElevatedButton(
                   onPressed: _rollTheDice,
                   child: Text('Roll'),
@@ -96,6 +107,15 @@ class _DiceGameState extends State<DiceGame> {
                   child: Text(
                     'GAME OVER',
                     style: TextStyle(fontSize: 26.0),
+                  ),
+                ),
+              ),
+            if(playAgain)
+              Container(
+                child: Center(
+                  child: ElevatedButton(
+                    onPressed: _playAgain,
+                    child: Text('Play Again'),
                   ),
                 ),
               ),
@@ -116,11 +136,25 @@ class _DiceGameState extends State<DiceGame> {
       if (total >= 50) {
         setState(() {
           gameOver = true;
-          total = 0;
+          playAgain = true;
           leftDiceNumber = 0;
           rightDiceNumber = 0;
+          if(total > highScore){
+            highScore = total;
+          }
         });
       }
+    });
+
+
+  }
+  void _playAgain() {
+    setState(() {
+      playAgain = false;
+      gameOver = false;
+      leftDiceNumber = 0;
+      rightDiceNumber = 0;
+      total = 0;
     });
   }
 }
